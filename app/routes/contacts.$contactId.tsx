@@ -5,8 +5,12 @@ import { getContact, updateContact } from "../data";
 
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import ContactCards from "~/components/ContactCards";
+import { authenticator } from "~/utils/auth.server";
 
-export const loader = async ({ params }: LoaderFunctionArgs) => {
+export const loader = async ({ params, request }: LoaderFunctionArgs) => {
+  await authenticator.isAuthenticated(request, {
+    failureRedirect: "/login",
+  })
   invariant(params.contactId, "Missing contactId param");
   const contact = await getContact(params.contactId);
   if (!contact) {

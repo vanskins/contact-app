@@ -85,7 +85,7 @@ export default function App() {
           <div id="sidebar">
             <div>
               <Link to="/">
-                <h1>Remix Contacts</h1>
+                <h1>Welcome {user.username}</h1>
               </Link>
               <Form method="post">
                 <button name="intent" value="logout" type="submit">

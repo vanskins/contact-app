@@ -4,6 +4,7 @@ import invariant from "tiny-invariant";
 import { getContact, updateContact } from "../data";
 
 import type { LoaderFunctionArgs, ActionFunctionArgs } from "@remix-run/node";
+import { authenticator } from "~/utils/auth.server";
 
 export const action = async ({
   params,
@@ -18,7 +19,11 @@ export const action = async ({
 
 export const loader = async ({
   params,
+  request
 }: LoaderFunctionArgs) => {
+  await authenticator.isAuthenticated(request, {
+    failureRedirect: "/login",
+  })
   invariant(params.contactId, "Missing contactId param");
   const contact = await getContact(params.contactId);
   if (!contact) {
